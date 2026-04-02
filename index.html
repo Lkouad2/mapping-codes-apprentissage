@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mapping des codes, usages et dépendances - Apprentissage</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr@1.9.3/dist/dsfr.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr@1.9.3/dist/utility/icons/icons.min.css">
+  <link rel="stylesheet" href="./css/styles.css">
+  <link rel="stylesheet" href="./css/layout.css">
+  <link rel="stylesheet" href="./css/fiche.css">
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.min.js"></script>
+
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr@1.9.3/dist/dsfr.module.min.js"></script>
+  <script nomodule src="https://cdn.jsdelivr.net/npm/@gouvfr/dsfr@1.9.3/dist/dsfr.nomodule.min.js"></script>
+  <script type="module" src="./js/app.js"></script>
+</head>
+<body class="fr-theme">
+  <header role="banner" class="fr-header">
+    <div class="fr-header__body">
+      <div class="fr-container">
+        <div class="fr-header__body-row">
+          <div>
+            <h1 class="fr-header__service-title">
+              Mapping des codes, usages et dépendances
+            </h1>
+            <p class="fr-text--sm fr-mt-1v fr-mb-0">
+              Champ apprentissage · certifications · établissements · employeurs / branches
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="fr-container action-bar">
+    <div class="fr-grid-row fr-grid-row--middle fr-grid-row--gutters fr-my-2w">
+      <div class="fr-col-12 fr-col-md-4">
+        <input
+          class="fr-input"
+          type="text"
+          id="filter-id"
+          list="nodes-list"
+          placeholder="Rechercher un code..."
+        />
+        <datalist id="nodes-list"></datalist>
+      </div>
+
+      <div class="fr-col-auto">
+        <button class="fr-btn fr-btn--sm" id="btn-filter">Afficher impact</button>
+        <button class="fr-btn fr-btn--sm fr-btn--secondary" id="btn-clear">Réinitialiser</button>
+      </div>
+
+      <div class="fr-col-auto zoom-controls">
+        <button class="zoom-btn" id="btn-zoom-out">−</button>
+        <button class="zoom-btn" id="btn-reset-zoom">⟲</button>
+        <button class="zoom-btn" id="btn-zoom-in">+</button>
+      </div>
+
+      <div class="fr-col-auto">
+        <button class="fr-btn fr-btn--sm fr-btn--icon-left fr-icon-download-line" id="btn-export">
+          Exporter SVG
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <main role="main" class="fr-container fr-mt-2w">
+    <div class="fr-grid-row fr-grid-row--gutters">
+      <div class="fr-col-12 fr-col-md-4 fr-col-lg-3">
+        <aside class="sidebar">
+          <div class="sidebar-section">
+            <h3 class="fr-h6">
+              <span class="fr-icon-filter-line"></span>
+              Filtres par bloc
+            </h3>
+
+            <div class="filter-blocs fr-fieldset">
+              <div class="fr-fieldset__content">
+                <div class="fr-checkbox-group fr-checkbox-group--sm">
+                  <input type="checkbox" id="bloc-certification" checked data-bloc="certification">
+                  <label class="fr-label" for="bloc-certification">
+                    <span class="legend-dot" style="background: var(--c-certification);"></span>
+                    Certification
+                  </label>
+                </div>
+
+                <div class="fr-checkbox-group fr-checkbox-group--sm">
+                  <input type="checkbox" id="bloc-etablissement" checked data-bloc="etablissement">
+                  <label class="fr-label" for="bloc-etablissement">
+                    <span class="legend-dot" style="background: var(--c-etablissement);"></span>
+                    Établissement
+                  </label>
+                </div>
+
+                <div class="fr-checkbox-group fr-checkbox-group--sm">
+                  <input type="checkbox" id="bloc-employeur" checked data-bloc="employeur">
+                  <label class="fr-label" for="bloc-employeur">
+                    <span class="legend-dot" style="background: var(--c-employeur);"></span>
+                    Employeur / branche
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="sidebar-section">
+            <h3 class="fr-h6">
+              <span class="fr-icon-filter-line"></span>
+              Filtres par relation
+            </h3>
+
+            <div class="filter-relations fr-fieldset">
+              <div class="fr-fieldset__content" id="relation-filters"></div>
+            </div>
+          </div>
+
+          <div class="sidebar-section">
+            <h3 class="fr-h6">
+              <span class="fr-icon-information-line"></span>
+              Légende
+            </h3>
+
+            <ul class="legend-list">
+              <li class="legend-item">
+                <span class="legend-shape legend-circle"></span>
+                <span>Code</span>
+              </li>
+              <li class="legend-item">
+                <span class="legend-shape legend-pill"></span>
+                <span>Identifiant</span>
+              </li>
+              <li class="legend-item">
+                <svg width="28" height="10" aria-hidden="true">
+                  <line x1="1" y1="5" x2="27" y2="5" stroke="#777" stroke-width="2"></line>
+                </svg>
+                <span>Relation</span>
+              </li>
+              <li class="legend-item">
+                <svg width="28" height="10" aria-hidden="true">
+                  <line x1="1" y1="5" x2="27" y2="5" stroke="#777" stroke-width="2" stroke-dasharray="5,4"></line>
+                </svg>
+                <span>Correspondance partielle</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="sidebar-section">
+            <h3 class="fr-h6">Lecture</h3>
+            <p class="fr-text--sm fr-mb-1w">
+              Les blocs structurent la lecture sans constituer des silos. Certains codes sont transverses.
+            </p>
+            <p class="fr-text--sm fr-mb-0">
+              Cliquer sur un code ouvre sa fiche documentaire.
+            </p>
+          </div>
+        </aside>
+      </div>
+
+      <div class="fr-col-12 fr-col-md-8 fr-col-lg-9">
+        <div class="graph-container">
+          <svg id="graph-svg" viewBox="0 0 1400 900" preserveAspectRatio="xMidYMid meet" width="100%" height="100%"></svg>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="fiche-overlay"></div>
+
+  <div id="fiche-popup" class="fr-container">
+    <div class="fiche-header">
+      <h2 class="fr-h5 fr-mb-0" id="fiche-title">Fiche</h2>
+      <button
+        class="fr-btn fr-btn--close"
+        id="btn-close-fiche"
+        title="Fermer la fiche"
+        aria-label="Fermer la fiche"
+      >
+        <span class="fr-icon-close-line" aria-hidden="true"></span>
+      </button>
+    </div>
+    <hr class="fr-hr">
+    <div id="fiche-content" class="fr-text--sm">Chargement...</div>
+  </div>
+</body>
+</html>

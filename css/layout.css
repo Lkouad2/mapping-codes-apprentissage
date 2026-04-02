@@ -1,0 +1,99 @@
+.link {
+  stroke: var(--c-link);
+  stroke-opacity: 0.85;
+  marker-end: url(#arrow);
+  transition: stroke 0.2s ease, opacity 0.2s ease;
+}
+
+.link.hidden,
+.node.hidden,
+.relation-label.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.link.dimmed,
+.node.dimmed,
+.relation-label.dimmed {
+  opacity: 0.14;
+}
+
+.link.highlight {
+  stroke: var(--c-link-highlight);
+  opacity: 1;
+}
+
+.node text {
+  font-size: 12px;
+  fill: #333;
+  pointer-events: none;
+  font-weight: 600;
+}
+
+.node .shape {
+  stroke: #fff;
+  stroke-width: 2px;
+  cursor: pointer;
+  transition: transform 0.15s ease, stroke 0.15s ease;
+}
+
+.node:hover .shape {
+  stroke: #161616;
+  stroke-width: 2.5px;
+}
+
+.node.highlight .shape {
+  stroke: #161616;
+  stroke-width: 3px;
+}
+
+.relation-label {
+  font-size: 10px;
+  fill: #555;
+  pointer-events: none;
+  user-select: none;
+}
+
+.zone-title {
+  font-size: 16px;
+  font-weight: 700;
+  fill: #444;
+  pointer-events: none;
+}
+
+.zone-subtitle {
+  font-size: 11px;
+  fill: #666;
+  pointer-events: none;
+}
+
+@media (forced-colors: active) {
+  .fr-btn,
+  .link,
+  .node,
+  .legend-dot {
+    forced-color-adjust: none;
+  }
+
+  .node .shape {
+    forced-color-adjust: none;
+    fill: CanvasText;
+    stroke: ButtonText;
+  }
+
+  .link {
+    forced-color-adjust: none;
+    stroke: ButtonText;
+  }
+
+  #arrow path {
+    fill: ButtonText;
+  }
+
+  .node text,
+  .relation-label,
+  .zone-title,
+  .zone-subtitle {
+    fill: ButtonText;
+  }
+}

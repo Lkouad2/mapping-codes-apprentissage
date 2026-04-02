@@ -1,0 +1,46 @@
+#fiche-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 9998;
+  display: none;
+}
+
+#fiche-overlay.visible {
+  display: block;
+}
+
+#fiche-popup {
+  position: fixed;
+  top: 0;
+  right: -560px;
+  width: 560px;
+  max-width: 96vw;
+  height: 100vh;
+  background: white;
+  box-shadow: -4px 0 14px rgba(0,0,0,0.18);
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 1rem 1.25rem 2rem;
+  z-index: 9999;
+  transition: right 0.3s ease-in-out;
+}
+
+.fiche-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:1rem;
+}
+
+.fiche-badge {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  margin-right: 0.35rem;
+  margin-bottom: 0.35rem;
+  background: #f2f2f2;
+  color: #333;
+}
