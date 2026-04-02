@@ -1,38 +1,49 @@
-# Mapping des codes, usages et dépendances — Apprentissage
+# Mapping des codes, usages et dépendances – Apprentissage
 
-Ce dépôt contient une version découpée et maintenable de la visualisation D3 du mapping des codes, usages et dépendances du champ apprentissage.
+## Objectif
 
-## Structure
+Ce projet propose une représentation visuelle des relations entre les codes utilisés dans le champ de l’apprentissage :
 
-- `index.html` : structure de la page
-- `css/` : styles séparés par responsabilité
-- `js/data/` : données du modèle (`nodes`, `links`, `relationLabels`, `ficheMap`)
-- `js/graph/` : logique graphique, interactions et panneau fiche
-- `docs/` : documentation pédagogique et règles de modélisation
+* certifications
+* établissements
+* employeurs / branches
 
-## Mise à jour des données
+Il permet de comprendre comment les données s’articulent entre elles.
 
-### Ajouter ou modifier un code
-Modifier `js/data/nodes.js`
+## Accès à l’application
 
-### Ajouter ou modifier une relation
-Modifier `js/data/links.js`
+👉 https://lkouad2.github.io/mapping-codes-apprentissage/
 
-### Renommer un libellé de relation
-Modifier `js/data/relation-labels.js`
+## Structure du projet
 
-### Ajouter ou modifier une fiche
-Modifier `js/data/fiche-map.js`
+```
+index.html → interface
+css/ → styles
+js/
+  ├── data/ → données (nodes, links…)
+  ├── graph/ → logique du graphe
+  └── app.js → point d’entrée
+docs/ → documentation
+```
 
-## Lancer localement
+## Principe de modélisation
 
-Ouvrir `index.html` dans un navigateur moderne.
+Le modèle repose sur 3 objets simples :
 
-Pour un meilleur confort dans VS Code, utiliser l’extension **Live Server**.
+* **nodes** → les codes
+* **links** → les relations entre codes
+* **fiches** → la documentation métier associée
 
-## Publication GitHub Pages
+## Documentation
 
-Le dépôt est compatible avec GitHub Pages :
-- fichier `index.html` à la racine
-- projet 100 % statique
-- publication possible depuis la branche `main`
+* Comprendre le modèle → docs/01-comprendre-le-modele.md
+* Nodes → docs/02-les-nodes.md
+* Relations → docs/03-les-relations.md
+* Fiches → docs/04-les-fiches.md
+* Modifier le graphe → docs/05-modifier-le-graphe.md
+
+## Philosophie
+
+Le graphe ne reconstruit pas une vérité technique.
+
+Il représente **ce qui a été exprimé en atelier**.
